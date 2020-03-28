@@ -99,10 +99,78 @@ T& List<T>::operator[](const int index)
 	}
 	
 }
+///////////////////////////////-----------HASH-------------------////////////////////////////////////////////////////////////////////////////////
+template<class T>
+class Hash
+{
+	int BUCKET;    // количество сегментов
+	int size;
+	// указатель на массив содержащий сегменты
+	List<T>* table;
+public:
+	Hash(int V);  // Constructor 
 
+	// вставляет ключ в хэш таблицу 
+	void insertItem(int x);
 
+	// удаляет ключи из хэш таблицы
+	void deleteItem(int key);
 
+	// хэш функция для сопоставлений значений с ключем
+	int hashFunction(int x) {
+		return (x % BUCKET);
+	}
+	void changeSize();
 
+	void displayHash();
+};
+template<class T>
+Hash<T>::Hash(int size)
+{
+	this->BUCKET = size;
+	table = new List[BUCKET];
+}
+template<class T>
+void Hash<T>::insertItem(int key)
+{
+	int index = hashFunction(key);
+	table[index].push_back(key);
+}
+template<class T>
+void Hash<T>::deleteItem(int key)
+{
+	// получить хэш индекс ключа 
+	int index = hashFunction(key);
+
+	// найти ключ и (индексном)списке 
+	List <T> ::iterator;T i;
+	for (i = table[index].begin();
+		i != table[index].end(); i++) {
+		if (*i == key)
+			break;
+	}
+
+	// если ключ найден в хэш таблице , удалить его 
+	if (i != table[index].end())
+		table[index].erase(i);
+}
+
+//  ф-я отображающая хэш таблицу
+template<class T>
+void Hash<T>::displayHash() {
+	for (int i = 0; i < BUCKET; i++) {
+		cout << i;
+		for (auto x : table[i])
+			cout << " --> " << x;
+		cout << endl;
+	}
+}
+template<class T>
+void Hash<T>::changeSize()
+{
+	size *= 2;
+	List* tmp = table;
+}
 
 int main()
 {
