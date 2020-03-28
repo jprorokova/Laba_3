@@ -19,8 +19,8 @@ private:
 	template<class T>
 	class Node
 	{public:
-		Node* pNext;//указатель на следующий елемент
-		T data;//данные, которые передаем
+		Node* pNext;//ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г  Г±Г«ГҐГ¤ГіГѕГ№ГЁГ© ГҐГ«ГҐГ¬ГҐГ­ГІ
+		T data;//Г¤Г Г­Г­Г»ГҐ, ГЄГ®ГІГ®Г°Г»ГҐ ГЇГҐГ°ГҐГ¤Г ГҐГ¬
 
 		Node(T data=T(), Node* pNext=nullptr)
 		{
@@ -31,7 +31,7 @@ private:
 
 	};
 
-	Node<T>*head;//первый елемент списка
+	Node<T>*head;//ГЇГҐГ°ГўГ»Г© ГҐГ«ГҐГ¬ГҐГ­ГІ Г±ГЇГЁГ±ГЄГ 
 	int Size;
 };
 
@@ -68,7 +68,7 @@ void List<T>::push_back(T data)
 template<class T>
 void List<T>::pop_front()
 {
-	Node<T>* temp = head;//времення переменная для хранение адреса уделяемого елемента
+	Node<T>* temp = head;//ГўГ°ГҐГ¬ГҐГ­Г­Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГҐ Г Г¤Г°ГҐГ±Г  ГіГ¤ГҐГ«ГїГҐГ¬Г®ГЈГ® ГҐГ«ГҐГ¬ГҐГ­ГІГ 
 
 	head = head->pNext;
 	delete temp;
@@ -100,23 +100,24 @@ T& List<T>::operator[](const int index)
 	
 }
 ///////////////////////////////-----------HASH-------------------////////////////////////////////////////////////////////////////////////////////
+/*
 template<class T>
 class Hash
 {
-	int BUCKET;    // количество сегментов
+	int BUCKET;    // ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г±ГҐГЈГ¬ГҐГ­ГІГ®Гў
 	int size;
-	// указатель на массив содержащий сегменты
+	// ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г  Г¬Г Г±Г±ГЁГў Г±Г®Г¤ГҐГ°Г¦Г Г№ГЁГ© Г±ГҐГЈГ¬ГҐГ­ГІГ»
 	List<T>* table;
 public:
 	Hash(int V);  // Constructor 
 
-	// вставляет ключ в хэш таблицу 
+	// ГўГ±ГІГ ГўГ«ГїГҐГІ ГЄГ«ГѕГ· Гў ГµГЅГё ГІГ ГЎГ«ГЁГ¶Гі 
 	void insertItem(int x);
 
-	// удаляет ключи из хэш таблицы
+	// ГіГ¤Г Г«ГїГҐГІ ГЄГ«ГѕГ·ГЁ ГЁГ§ ГµГЅГё ГІГ ГЎГ«ГЁГ¶Г»
 	void deleteItem(int key);
 
-	// хэш функция для сопоставлений значений с ключем
+	// ГµГЅГё ГґГіГ­ГЄГ¶ГЁГї Г¤Г«Гї Г±Г®ГЇГ®Г±ГІГ ГўГ«ГҐГ­ГЁГ© Г§Г­Г Г·ГҐГ­ГЁГ© Г± ГЄГ«ГѕГ·ГҐГ¬
 	int hashFunction(int x) {
 		return (x % BUCKET);
 	}
@@ -139,10 +140,10 @@ void Hash<T>::insertItem(int key)
 template<class T>
 void Hash<T>::deleteItem(int key)
 {
-	// получить хэш индекс ключа 
+	// ГЇГ®Г«ГіГ·ГЁГІГј ГµГЅГё ГЁГ­Г¤ГҐГЄГ± ГЄГ«ГѕГ·Г  
 	int index = hashFunction(key);
 
-	// найти ключ и (индексном)списке 
+	// Г­Г Г©ГІГЁ ГЄГ«ГѕГ· ГЁ (ГЁГ­Г¤ГҐГЄГ±Г­Г®Г¬)Г±ГЇГЁГ±ГЄГҐ 
 	List <T> ::iterator;T i;
 	for (i = table[index].begin();
 		i != table[index].end(); i++) {
@@ -150,12 +151,12 @@ void Hash<T>::deleteItem(int key)
 			break;
 	}
 
-	// если ключ найден в хэш таблице , удалить его 
+	// ГҐГ±Г«ГЁ ГЄГ«ГѕГ· Г­Г Г©Г¤ГҐГ­ Гў ГµГЅГё ГІГ ГЎГ«ГЁГ¶ГҐ , ГіГ¤Г Г«ГЁГІГј ГҐГЈГ® 
 	if (i != table[index].end())
 		table[index].erase(i);
 }
 
-//  ф-я отображающая хэш таблицу
+//  Гґ-Гї Г®ГІГ®ГЎГ°Г Г¦Г ГѕГ№Г Гї ГµГЅГё ГІГ ГЎГ«ГЁГ¶Гі
 template<class T>
 void Hash<T>::displayHash() {
 	for (int i = 0; i < BUCKET; i++) {
@@ -171,7 +172,57 @@ void Hash<T>::changeSize()
 	size *= 2;
 	List* tmp = table;
 }
+*/
+typedef int T;
+typedef int hashTableIndex;
+struct Node
+{
+	int data;
+	Node* next; //РїРѕРєР°Р¶С‡РёРє РЅР° СЃР»РµРґ СЌР»РµРјРµРЅС‚
+};
+typedef Node* PNode;
+class Hash
+{
+	PNode* hashTable; // С…СЌС€ С‚Р°Р±Р»РёС†Р°
+	int hashTableSize;
+public:
+	Hash():hashTable(NULL),hashTableSize(0){}
+	hashTableIndex myHash(T);// РѕРїСЂРµРґРµР»РµРЅРёРµ С…СЌС€ Р·РЅР°С‡РµРЅРёСЏ
+	void insertNode(T);//РІСЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р° РІ С…СЌС€ С‚Р°Р±Р»РёС†Сѓ
+	void createHashTable();//СЃРѕР·РґР°РЅРёРµ С…СЌС€ С‚Р°Р±Р»РёС†С‹
+	void createFileHash();//СЃРѕР·РґР°РЅРёРµ С„Р°Р№Р»Р° СЃ С…СЌС€ С‚Р°Р±Р»РёС†РµР№
+};
+//СЃРѕР·РґР°РЅРёРµ С„Р°Р№Р»Р° РєР»СЋС‡РµР№
+void createFileKey();
 
+
+
+void createFileKey() {
+	int n;// no. of keys
+	
+	
+}
+void Hash::createHashTable()
+{
+	hashTable = new Node * [hashTableSize];
+	for (int i = 0; i < hashTableSize; i++) {
+		hashTable[i] = nullptr;
+	}
+	int n;
+}
+void Hash::insertNode(T key)
+{
+	PNode p, po;
+	int h = myHash(key);
+	p = new Node;
+	po = hashTable[h];
+	hashTable[h] = p;
+	p->next = po;
+	p->data = key;
+}
+int Hash::myHash(T key1) {
+	return(key1 % hashTableSize);
+}
 int main()
 {
 
