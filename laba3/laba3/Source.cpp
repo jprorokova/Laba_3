@@ -303,7 +303,7 @@ void menu(DictionaryHash & table)
 	}
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 	
 	DictionaryHash table;
 	parse(table, "dictionary.txt");
