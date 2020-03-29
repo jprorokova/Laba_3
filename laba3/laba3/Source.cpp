@@ -1,33 +1,128 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <fstream>
+#include<iostream>
+#include<vector>
+#include<fstream>
 #include<string>
+#include<algorithm>
 
 using namespace std;
+template<class T>
+class List;
+
+#define HashSize 1000
+
+template<class T>
+class HashTable
+{
+public:
+	HashTable();
+	~HashTable();
+	void SetData(string FileName);
+	void GetData(string Sentence);
+
+
+
+private:
+	int KeyFuncion(string word);
+	List<string>* Hash = new List<T>[HashSize];
+
+};
+
+template<class T>
+HashTable<T>::HashTable()
+{
+
+}
+
+template<class T>
+HashTable<T>::~HashTable()
+{
+}
+
+template<class T>
+void HashTable<T>::SetData(string FileName)
+{
+	string temp;
+	string key_word;
+	string definition;
+	ifstream File(FileName);
+	while (!File.eof())
+	{
+		key_word = ""; definition = ""; temp = "";
+		getline(File, temp);
+		key_word = temp.substr(0, temp.find(';'));
+		definition.insert(0, temp, temp.find(';') + 1);
+		int key = KeyFuncion(key_word);
+
+		Hash[key].push_back(key_word);
+		Hash[key].push_back(definition);
+	}
+
+}
+
+template<class T>
+void HashTable<T>::GetData(string Sentence)
+{
+	transform(Sentence.begin(), Sentence.end(), Sentence.begin(), ::toupper);
+	string delim(" ");
+	Sentence.insert(Sentence.size(), " ");
+	int prev = 0;
+	int next;
+	string word;
+	int key;
+
+	while ((next = Sentence.find(delim, prev)) != string::npos)
+	{
+		word = "";
+		word = Sentence.substr(prev, next - prev);
+		key = KeyFuncion(word);
+
+		for (int i = 0; i < Hash[key].GetSize(); i++)
+		{
+			if (word == Hash[key][i])
+			{
+				cout << word << ":" << endl;
+				Hash[key].ShowData(i + 1);
+			}
+		}
+
+
+
+		prev = next + 1;
+	}
+
+}
+
+
+
+template<class T>
+int HashTable<T>::KeyFuncion(string word)
+{
+	return 0;
+}
+
 
 template<class T>
 class List
 {
+	friend HashTable<T>;
 public:
 	List();
 	~List();
 	void push_back(T data);
-	int getSize() const { return Size; }
-	void pop_front();
+	int GetSize() { return Size; }
+	void  pop_front();
 	void clear();
 	T& operator[](const int index);
-	T& find(const T& key);
 
 private:
-	template<class L>
+	template<class T>
 	class Node
 	{
 	public:
-		Node* pNext;//????????? ?? ????????? ???????
-		L data;//??????, ??????? ????????
+		Node* pNext;//указатель на следующий елемент
+		T data;//данные, которые передаем
 
-		Node(L data = L(), Node* pNext = nullptr)
+		Node(T data = T(), Node* pNext = nullptr)
 		{
 			this->data = data;
 			this->pNext = pNext;
@@ -36,8 +131,9 @@ private:
 
 	};
 
-	Node<T>* head;//?????? ??????? ??????
+	Node<T>* head;//первый елемент списка
 	int Size;
+	void ShowData(int index);
 };
 
 template<class T>
@@ -49,7 +145,6 @@ List<T>::List()
 template<class T>
 List<T>::~List()
 {
-	clear();
 }
 
 template<class T>
@@ -74,11 +169,13 @@ void List<T>::push_back(T data)
 template<class T>
 void List<T>::pop_front()
 {
-	Node<T>* temp = head;//???????? ?????????? ??? ???????? ?????? ?????????? ????????
+	Node<T>* temp = head;//времення переменная для хранение адреса уделяемого елемента
 
 	head = head->pNext;
 	delete temp;
 	Size--;
+
+
 }
 
 template<class T>
@@ -86,6 +183,10 @@ void List<T>::clear()
 {
 	while (Size)pop_front();
 }
+
+
+
+
 
 template<class T>
 T& List<T>::operator[](const int index)
@@ -102,213 +203,40 @@ T& List<T>::operator[](const int index)
 		counter++;
 	}
 
+
 }
 
 template<class T>
-T& List<T>::find(const T & key) {
-	Node<T>* tmp = this->head;
-	bool found = false;
-	while (tmp != nullptr) {
-		if (tmp->data == key) {
-			found = true;
-			break;
-		}
-		tmp = tmp->pNext;
-	}
-	if (!found) {
-		cout << "Error: no such object!" << std::endl;
-	}
-	
-	return tmp->data;
-}
+void List<T>::ShowData(int index)
+{
+	Node<T>* temp = this->head;
 
-struct DictPair {
-	string request;
-	string response;
-	
-	bool operator==(const DictPair& other)
+	for (int i = 0; i < index; i++)
 	{
-		return request == other.request;
+		temp = temp->pNext;
 	}
-};
+	cout << temp->data << endl;
 
-typedef List<DictPair> PairList;
 
-class DictionaryHash {
-public:
-	DictionaryHash();
-	~DictionaryHash();
-	int hashFunc(string str);
-	string& operator[](const string& request);
-	void enlarge();
-	void push_back(DictPair pair);	
-	
-private:
-	int size;
-	int occupiedSize;
-	PairList * list;
-};
 
-DictionaryHash::DictionaryHash()
+}
+
+
+
+
+
+
+
+
+
+int main(int argc, char* argv[])
 {
-	size = 10;
-	occupiedSize = 0;
-	list = new PairList[size];
-}
-
-DictionaryHash::~DictionaryHash()
-{
-	delete[] list;
-}
-
-int DictionaryHash::hashFunc(string str)
-{
-	int key = 0;
-    long long temp1 = 0;
-    long long temp2 = 0;
-    char cast;
-    int ascii;
-    for (int i = 0; i < str.length(); i++) {
-        if (str.length() - (i + 1) > 8) {
-            temp1 = pow(26, 8);
-        }
-        else {
-            temp1 = pow(26, (str.length() - (i + 1)));
-        }
-        if (str[i] != '-' && str[i] != ' ') {
-            cast = str[i];
-            ascii = (int)cast - 65;
-        }
-        else {
-            ascii = 1;
-        }
-        temp1 *= ascii;
-        temp2 += temp1;
-    }
-    temp2 %= size;
-    key = temp2;
-    return key;
-}
-
-void DictionaryHash::enlarge()
-{
-	occupiedSize = 0;
-	PairList * tmp = list;
-	size *= 2;
-	list = new PairList[size];
-	
-	for (int i = 0; i < size/2; i++) {
-        for (int j = 0; j < tmp[i].getSize(); j++) {
-            push_back(tmp[i][j]);
-        }
-    }
-    delete[] tmp;
-}
-
-void DictionaryHash::push_back(DictPair pair)
-{
-	if (occupiedSize + 1 > size * 0.8)
-	{
-		enlarge();
-	}
-	list[hashFunc(pair.request)].push_back(pair);
-	occupiedSize++;
-}
-
-//string& DictionaryHash::operator[](const string& request)
-//{
-//	DictPair pair;
-//	pair.request = request;
-//	list[hashFunc(request)].find(pair);
-//}
-
-void parse(DictionaryHash& table, const string & filename)
-{
-    ifstream in;
-    in.open(filename);
-    if(in.is_open()) {
-        while(in.eof() != true) {
-        	DictPair dPair;
-            getline(in, dPair.request, ';');
-            getline(in, dPair.response, '\n');
-            table.push_back(dPair);
-        }
-        in.close();
-    }
-    else {
-        cout << "Error: no file" << endl;
-        exit(1);
-    }
-}
-
-void upperCase(vector<string>& word) {
-    for(int i = 0; i < word.size(); i++) {
-        for(int j = 0; j < word[i].length(); j++) {
-            if (word[i][j] != '-' && word[i][j] != ' ') {
-                word[i][j] = toupper(word[i][j]);
-            }
-        }
-    }
-}
-
-vector<string> beatByWords(string & request)
-{
-	vector<string> words;
-	request += " ";
-	string buf;
-	
-	for(int i = 0; i < request.length(); ++i)
-	{
-		if(request[i] == ' ')
-		{
-			if(buf.length() != 0)
-			{
-				words.push_back(buf);
-				buf = "";
-			}
-		}
-		else
-		{
-			buf += request[i];
-		}
-	}
-	return words;
-}
-
-void menu(DictionaryHash & table)
-{
-	string request;
-	for(;;)
-	{
-		cout << "Put your word(s) to describe it or 0 to exit: ";
-		getline(cin, request, '\n');
-		
-		if (request == "0") break;
-		
-		cout << endl;
-		
-		vector<string> words = beatByWords(request);
-		
-		for(int i = 0; i < words.size(); ++i)
-		{
-			cout << words[i] << " ";
-		}
-		
-		upperCase(words);
-				
-		for (int i = 0; i < words.size(); i++) {
-            cout << words[i] << " - " << table[words[i]] << endl << endl;
-        }
-	}
-}
-
-int main() {
-	
-	//DictionaryHash table;
-	//parse(table, "dictionary.txt");
-	//menu(table);
-	//return 0;
-
+	string Data;
+	cout << "Enter your sentence: ";
+	getline(cin, Data);
+	HashTable<string> Sentence;
+	Sentence.SetData("data.txt");
+	Sentence.GetData(Data);
 
 
 }
