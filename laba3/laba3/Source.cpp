@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <fstream>
+#include<string>
 
 using namespace std;
 
@@ -214,12 +215,12 @@ void DictionaryHash::push_back(DictPair pair)
 	occupiedSize++;
 }
 
-string& DictionaryHash::operator[](const string& request)
-{
-	DictPair pair;
-	pair.request = request;
-	list[hashFunc(request)].find(pair);
-}
+//string& DictionaryHash::operator[](const string& request)
+//{
+//	DictPair pair;
+//	pair.request = request;
+//	list[hashFunc(request)].find(pair);
+//}
 
 void parse(DictionaryHash& table, const string & filename)
 {
@@ -303,8 +304,11 @@ void menu(DictionaryHash & table)
 
 int main() {
 	
-	DictionaryHash table;
-	parse(table, "dictionary.txt");
-	menu(table);
-	return 0;
+	//DictionaryHash table;
+	//parse(table, "dictionary.txt");
+	//menu(table);
+	//return 0;
+
+
+
 }

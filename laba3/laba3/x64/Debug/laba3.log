@@ -1,0 +1,5 @@
+﻿  Source.cpp
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(173,24): warning C4244: =: преобразование "double" в "__int64", возможна потеря данных
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(176,24): warning C4244: =: преобразование "double" в "__int64", возможна потеря данных
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(189,11): warning C4244: =: преобразование "__int64" в "int", возможна потеря данных
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(105): warning C4715: List<DictPair>::operator[]: значение возвращается не при всех путях выполнения
