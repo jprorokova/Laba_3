@@ -99,138 +99,208 @@ T& List<T>::operator[](const int index)
 	}
 	
 }
-///////////////////////////////-----------HASH-------------------////////////////////////////////////////////////////////////////////////////////
-/*
 template<class T>
-class Hash
-{
-	int BUCKET;    // êîëè÷åñòâî ñåãìåíòîâ
-	int size;
-	// óêàçàòåëü íà ìàññèâ ñîäåðæàùèé ñåãìåíòû
-	List<T>* table;
-public:
-	Hash(int V);  // Constructor 
-
-	// âñòàâëÿåò êëþ÷ â õýø òàáëèöó 
-	void insertItem(int x);
-
-	// óäàëÿåò êëþ÷è èç õýø òàáëèöû
-	void deleteItem(int key);
-
-	// õýø ôóíêöèÿ äëÿ ñîïîñòàâëåíèé çíà÷åíèé ñ êëþ÷åì
-	int hashFunction(int x) {
-		return (x % BUCKET);
-	}
-	void changeSize();
-
-	void displayHash();
-};
-template<class T>
-Hash<T>::Hash(int size)
-{
-	this->BUCKET = size;
-	table = new List[BUCKET];
-}
-template<class T>
-void Hash<T>::insertItem(int key)
-{
-	int index = hashFunction(key);
-	table[index].push_back(key);
-}
-template<class T>
-void Hash<T>::deleteItem(int key)
-{
-	// ïîëó÷èòü õýø èíäåêñ êëþ÷à 
-	int index = hashFunction(key);
-
-	// íàéòè êëþ÷ è (èíäåêñíîì)ñïèñêå 
-	List <T> ::iterator;T i;
-	for (i = table[index].begin();
-		i != table[index].end(); i++) {
-		if (*i == key)
+T& List<T>::find(const T& key) {
+	Node<T>* tmp = this->head;
+	bool found = false;
+	while (tmp != nullptr) {
+		if (tmp->data == key) {
+			found = true;
 			break;
+		}
+		tmp = tmp->pNext;
+	}
+	if (!found) {
+		cout << "Error: no such object!" << std::endl;
 	}
 
-	// åñëè êëþ÷ íàéäåí â õýø òàáëèöå , óäàëèòü åãî 
-	if (i != table[index].end())
-		table[index].erase(i);
+	return tmp->data;
 }
 
-//  ô-ÿ îòîáðàæàþùàÿ õýø òàáëèöó
-template<class T>
-void Hash<T>::displayHash() {
-	for (int i = 0; i < BUCKET; i++) {
-		cout << i;
-		for (auto x : table[i])
-			cout << " --> " << x;
-		cout << endl;
+struct DictPair {
+	string request;
+	string response;
+
+	bool operator==(const DictPair& other)
+	{
+		return request == other.request;
 	}
-}
-template<class T>
-void Hash<T>::changeSize()
-{
-	size *= 2;
-	List* tmp = table;
-}
-*/
-typedef int T;
-typedef int hashTableIndex;
-struct Node
-{
-	int data;
-	Node* next; //покажчик на след элемент
 };
-typedef Node* PNode;
-class Hash
-{
-	PNode* hashTable; // хэш таблица
-	int hashTableSize;
+
+typedef List<DictPair> PairList;
+
+class DictionaryHash {
 public:
-	Hash():hashTable(NULL),hashTableSize(0){}
-	hashTableIndex myHash(T);// определение хэш значения
-	void insertNode(T);//вставка элемента в хэш таблицу
-	void createHashTable();//создание хэш таблицы
-	void createFileHash();//создание файла с хэш таблицей
+	DictionaryHash();
+	~DictionaryHash();
+	int hashFunc(string str);
+	string& operator[](const string& request);
+	void enlarge();
+	void push_back(DictPair pair);
+
+private:
+	int size;
+	int occupiedSize;
+	PairList* list;
 };
-//создание файла ключей
-void createFileKey();
 
-
-
-void createFileKey() {
-	int n;// no. of keys
-	
-	
-}
-void Hash::createHashTable()
+DictionaryHash::DictionaryHash()
 {
-	hashTable = new Node * [hashTableSize];
-	for (int i = 0; i < hashTableSize; i++) {
-		hashTable[i] = nullptr;
+	size = 10;
+	occupiedSize = 0;
+	list = new PairList[size];
+}
+
+DictionaryHash::~DictionaryHash()
+{
+	delete[] list;
+}
+
+int DictionaryHash::hashFunc(string str)
+{
+	int key = 0;
+	long long temp1 = 0;
+	long long temp2 = 0;
+	char cast;
+	int ascii;
+	for (int i = 0; i < str.length(); i++) {
+		if (str.length() - (i + 1) > 8) {
+			temp1 = pow(26, 8);
+		}
+		else {
+			temp1 = pow(26, (str.length() - (i + 1)));
+		}
+		if (str[i] != '-' && str[i] != ' ') {
+			cast = str[i];
+			ascii = (int)cast - 65;
+		}
+		else {
+			ascii = 1;
+		}
+		temp1 *= ascii;
+		temp2 += temp1;
 	}
-	int n;
+	temp2 %= size;
+	key = temp2;
+	return key;
 }
-void Hash::insertNode(T key)
-{
-	PNode p, po;
-	int h = myHash(key);
-	p = new Node;
-	po = hashTable[h];
-	hashTable[h] = p;
-	p->next = po;
-	p->data = key;
-}
-int Hash::myHash(T key1) {
-	return(key1 % hashTableSize);
-}
-int main()
-{
 
-	List<int> lst;
-	lst.push_back(5);
-	lst.push_back(50);
-	cout << lst[1];
-	lst.clear();
-	cout<<lst.GetSize();
+void DictionaryHash::enlarge()
+{
+	occupiedSize = 0;
+	PairList* tmp = list;
+	size *= 2;
+	list = new PairList[size];
 
+	for (int i = 0; i < size / 2; i++) {
+		for (int j = 0; j < tmp[i].getSize(); j++) {
+			push_back(tmp[i][j]);
+		}
+	}
+	delete[] tmp;
+}
+
+void DictionaryHash::push_back(DictPair pair)
+{
+	if (occupiedSize + 1 > size * 0.8)
+	{
+		enlarge();
+	}
+	list[hashFunc(pair.request)].push_back(pair);
+	occupiedSize++;
+}
+
+string& DictionaryHash::operator[](const string& request)
+{
+	DictPair pair;
+	pair.request = request;
+	list[hashFunc(request)].find(pair);
+}
+
+void parse(DictionaryHash& table, const string& filename)
+{
+	ifstream in;
+	in.open(filename);
+	if (in.is_open()) {
+		while (in.eof() != true) {
+			DictPair dPair;
+			getline(in, dPair.request, ';');
+			getline(in, dPair.response, '\n');
+			table.push_back(dPair);
+		}
+		in.close();
+	}
+	else {
+		cout << "Error: no file" << endl;
+		exit(1);
+	}
+}
+
+void upperCase(vector<string>& word) {
+	for (int i = 0; i < word.size(); i++) {
+		for (int j = 0; j < word[i].length(); j++) {
+			if (word[i][j] != '-' && word[i][j] != ' ') {
+				word[i][j] = toupper(word[i][j]);
+			}
+		}
+	}
+}
+
+vector<string> beatByWords(string& request)
+{
+	vector<string> words;
+	request += " ";
+	string buf;
+
+	for (int i = 0; i < request.length(); ++i)
+	{
+		if (request[i] == ' ')
+		{
+			if (buf.length() != 0)
+			{
+				words.push_back(buf);
+				buf = "";
+			}
+		}
+		else
+		{
+			buf += request[i];
+		}
+	}
+	return words;
+}
+
+void menu(DictionaryHash& table)
+{
+	string request;
+	for (;;)
+	{
+		cout << "Put your word(s) to describe it or 0 to exit: ";
+		getline(cin, request, '\n');
+
+		if (request == "0") break;
+
+		cout << endl;
+
+		vector<string> words = beatByWords(request);
+
+		for (int i = 0; i < words.size(); ++i)
+		{
+			cout << words[i] << " ";
+		}
+
+		upperCase(words);
+
+		for (int i = 0; i < words.size(); i++) {
+			cout << words[i] << " - " << table[words[i]] << endl << endl;
+		}
+	}
+}
+
+int main() {
+
+	DictionaryHash table;
+	parse(table, "dictionary.txt");
+	menu(table);
+	return 0;
 }
