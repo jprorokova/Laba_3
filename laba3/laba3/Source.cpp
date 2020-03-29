@@ -110,7 +110,8 @@ T& List<T>::find(const T & key) {
 	while (tmp != nullptr) {
 		if (tmp->data == key) {
 			found = true;
-			break;
+			//break;
+			return tmp->data;
 		}
 		tmp = tmp->pNext;
 	}
@@ -118,7 +119,7 @@ T& List<T>::find(const T & key) {
 		cout << "Error: no such object!" << std::endl;
 	}
 	
-	return tmp->data;
+	
 }
 
 struct DictPair {
