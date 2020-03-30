@@ -220,7 +220,7 @@ string& DictionaryHash::operator[](const string& request)
 {
 	DictPair pair;
 	pair.request = request;
-	list[hashFunc(request)].find(pair);
+	return list[hashFunc(request)].find(pair).response;
 }
 
 void parse(DictionaryHash& table, const string & filename)
