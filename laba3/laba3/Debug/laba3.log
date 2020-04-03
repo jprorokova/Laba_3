@@ -1,3 +1,9 @@
 ﻿  Source.cpp
-C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(207): warning C4715: List<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >::operator[]: значение возвращается не при всех путях выполнения
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(105,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(102): message : во время компиляции функции-члена класс шаблон "int HashTable<std::string>::KeyFuncion(std::string)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(57): message : выполняется компиляция ссылки на экземпляр шаблон функции "int HashTable<std::string>::KeyFuncion(std::string)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(35): message : во время компиляции функции-члена класс шаблон "HashTable<std::string>::HashTable(void)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(244): message : выполняется компиляция ссылки на экземпляр шаблон функции "HashTable<std::string>::HashTable(void)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(244): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "HashTable<std::string>"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(217): warning C4715: List<std::basic_string<char,std::char_traits<char>,std::allocator<char> > >::operator[]: значение возвращается не при всех путях выполнения
   laba3.vcxproj -> C:\Users\alexe\Desktop\OOP\laba3\laba3\Debug\laba3.exe

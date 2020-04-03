@@ -1,0 +1,5 @@
+﻿  Source.cpp
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(73,1): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(64): message : во время компиляции функции-члена класс шаблон "void HashTable<std::string>::GetData(std::string)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(248): message : выполняется компиляция ссылки на экземпляр шаблон функции "void HashTable<std::string>::GetData(std::string)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(242): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "HashTable<std::string>"

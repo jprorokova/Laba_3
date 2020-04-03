@@ -8,7 +8,10 @@ using namespace std;
 template<class T>
 class List;
 
-#define HashSize 1000
+template<class T>
+class HashTable;
+
+#define HashSize 100000
 
 template<class T>
 class HashTable
@@ -24,7 +27,7 @@ public:
 private:
 	int KeyFuncion(string word);
 	List<string>* Hash = new List<T>[HashSize];
-
+	
 };
 
 template<class T>
@@ -95,9 +98,17 @@ void HashTable<T>::GetData(string Sentence)
 
 
 template<class T>
-int HashTable<T>::KeyFuncion(string word)
+int HashTable<T>::KeyFuncion(string  word)
 {
-	return 0;
+
+	int key = 0;
+	for (int i = 0; i < word.size(); i++)
+	{
+		key += (int)word[i];
+	}
+	key %= 100000;
+	return key;
+
 }
 
 
@@ -114,7 +125,6 @@ public:
 	void clear();
 	T& operator[](const int index);
 
-private:
 	template<class T>
 	class Node
 	{
@@ -132,15 +142,15 @@ private:
 	};
 
 	Node<T>* head;//первый елемент списка
-	int Size;
+	int Size=0;
 	void ShowData(int index);
 };
 
 template<class T>
 List<T>::List()
 {
-	Size = 0;
 	head = nullptr;
+	
 }
 template<class T>
 List<T>::~List()
@@ -150,7 +160,7 @@ List<T>::~List()
 template<class T>
 void List<T>::push_back(T data)
 {
-	if (head == nullptr)
+	if (head==nullptr)
 	{
 		head = new Node<T>(data);
 	}
@@ -231,12 +241,23 @@ void List<T>::ShowData(int index)
 
 int main(int argc, char* argv[])
 {
-	string Data;
-	cout << "Enter your sentence: ";
-	getline(cin, Data);
 	HashTable<string> Sentence;
-	Sentence.SetData("data.txt");
-	Sentence.GetData(Data);
+	Sentence.SetData("D:\\dictionary.txt");
+	for (int i = 1; i < argc; i++)
+	{
+		string word; word = "";
+		word = string(argv[i]);
+		Sentence.GetData(word);
+	}
+	system("pause");
+	
+	//cout << "¬ведите строку: "<<endl;
+	//string data;
+	//getline(cin, data);
+	//HashTable<string> Sentence;
+	//Sentence.SetData("dictionary.txt");
+	//Sentence.GetData(data);
+
 
 
 }

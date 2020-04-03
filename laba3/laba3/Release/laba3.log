@@ -1,0 +1,7 @@
+﻿  Source.cpp
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(102,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(99): message : во время компиляции функции-члена класс шаблон "int HashTable<std::string>::KeyFuncion(std::string)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(54): message : выполняется компиляция ссылки на экземпляр шаблон функции "int HashTable<std::string>::KeyFuncion(std::string)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(32): message : во время компиляции функции-члена класс шаблон "HashTable<std::string>::HashTable(void)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(242): message : выполняется компиляция ссылки на экземпляр шаблон функции "HashTable<std::string>::HashTable(void)"
+C:\Users\alexe\Desktop\OOP\laba3\laba3\laba3\Source.cpp(242): message : выполняется компиляция ссылки на экземпляр класс шаблон функции "HashTable<std::string>"
